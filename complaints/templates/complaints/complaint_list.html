@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Complaints</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #FFFDF2;
+            margin: 0;
+            padding: 30px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            padding: 8px 14px;
+            background-color: #28a745;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #218838;
+        }
+
+        .btn-logout {
+            background-color: #dc3545;
+        }
+
+        .btn-logout:hover {
+            background-color: #c82333;
+        }
+
+        .filter-form {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .filter-form select,
+        .filter-form input[type="text"] {
+            padding: 8px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .filter-form button {
+            padding: 8px 14px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .filter-form button:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #EAE7DD;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 14px;
+            border-bottom: 1px solid #000000;
+            text-align: left;
+        }
+
+        th {
+            background-color: #BFA181;
+        }
+
+        a.action-link {
+            margin-right: 10px;
+            color: #2660ff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a.action-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .filter-form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            thead {
+                display: none;
+            }
+
+            tr {
+                margin-bottom: 15px;
+                background-color: #fff;
+                padding: 10px;
+                border-radius: 6px;
+                box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+            }
+
+            td {
+                padding: 8px 10px;
+                border: none;
+                position: relative;
+                padding-left: 50%;
+            }
+
+            td::before {
+                position: absolute;
+                left: 10px;
+                top: 8px;
+                font-weight: bold;
+                color: #555;
+            }
+
+            td:nth-of-type(1)::before { content: "Title"; }
+            td:nth-of-type(2)::before { content: "Description"; }
+            td:nth-of-type(3)::before { content: "Status"; }
+            td:nth-of-type(4)::before { content: "Actions"; }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Welcome, {{ request.user.username }}</h1>
+
+    <div class="top-bar">
+        <div>
+            <a href="{% url 'dashboard' %}" class="btn" style="background:#BFA181;">Dashboard</a>
+            <a href="{% url 'complaint_create' %}" class="btn">+ New Complaint</a>
+            <form action="{% url 'logout' %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Logout</button>
+            </form>
+
+        </div>
+    </div>
+
+
+    <!-- Filter and Search Form -->
+    <form method="get" class="filter-form">
+        <label for="category">Category:</label>
+        <select name="category" id="category" onchange="this.form.submit()">
+            <option value="">All</option>
+            <option value="Electricity" {% if request.GET.category == 'Electricity' %}selected{% endif %}>Electricity</option>
+            <option value="Water" {% if request.GET.category == 'Water' %}selected{% endif %}>Water</option>
+            <option value="Road" {% if request.GET.category == 'Road' %}selected{% endif %}>Road</option>
+            <option value="Other" {% if request.GET.category == 'Other' %}selected{% endif %}>Other</option>
+        </select>
+
+        <label for="status">Status:</label>
+        <select name="status" id="status" onchange="this.form.submit()">
+            <option value="">All</option>
+            <option value="Pending" {% if request.GET.status == 'Pending' %}selected{% endif %}>Pending</option>
+            <option value="In Progress" {% if request.GET.status == 'In Progress' %}selected{% endif %}>In Progress</option>
+            <option value="Resolved" {% if request.GET.status == 'Resolved' %}selected{% endif %}>Resolved</option>
+        </select>
+
+        <input type="text" name="q" placeholder="Search title..." value="{{ request.GET.q }}">
+        <button type="submit">Search</button>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for complaint in complaints %}
+            <tr>
+                <td>{{ complaint.title }}</td>
+                <td>{{ complaint.description }}</td>
+                <td>{{ complaint.status }}</td>
+                <td>
+                    <a href="{% url 'complaint_update' complaint.pk %}" class="action-link">Edit</a>
+                    <a href="{% url 'complaint_delete' complaint.pk %}" class="action-link">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No complaints found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>

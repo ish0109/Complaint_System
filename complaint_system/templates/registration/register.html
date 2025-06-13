@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <style>
+        body { font-family: sans-serif; background: #BFA181; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        form { background: #EAE7DD; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        input { display: block; margin-bottom: 15px; padding: 8px; width: 100%; }
+        button { padding: 10px 15px; background: #007bff; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <form method="post">
+        <h2>Create Account</h2>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Register</button>
+    </form>
+</body>
+</html>

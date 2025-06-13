@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #EAE7DD;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .stats-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background-color: #fff;
+            padding: 20px;
+            border-left: 6px solid #007bff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+            flex: 1;
+            min-width: 200px;
+            border-radius: 8px;
+        }
+
+        .stat-card h3 {
+            margin-top: 0;
+            color: #555;
+        }
+
+        .stat-card .count {
+            font-size: 24px;
+            color: #000;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 15px;
+            color: #007bff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Hello, {{ username }} </h1>
+    <p>Welcome to your Complaint Dashboard</p>
+</div>
+
+<div class="stats-container">
+    <div class="stat-card">
+        <h3>Total Complaints</h3>
+        <div class="count">{{ total }}</div>
+    </div>
+    <div class="stat-card" style="border-left-color: #ffc107;">
+        <h3>Pending</h3>
+        <div class="count">{{ pending }}</div>
+    </div>
+    <div class="stat-card" style="border-left-color: #17a2b8;">
+        <h3>In Progress</h3>
+        <div class="count">{{ in_progress }}</div>
+    </div>
+    <div class="stat-card" style="border-left-color: #28a745;">
+        <h3>Resolved</h3>
+        <div class="count">{{ resolved }}</div>
+    </div>
+</div>
+
+<a href="{% url 'complaint_list' %}">→ View My Complaints</a>
+
+</body>
+</html>
