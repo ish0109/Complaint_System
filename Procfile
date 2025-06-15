@@ -1,1 +1,1 @@
-web: gunicorn complaint_system.wsgi
+web: gunicorn complaint_system.wsgi:application
