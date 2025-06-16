@@ -84,7 +84,7 @@ def signup_view(request):
             return redirect('complaint_list')
     else:
         form = UserCreationForm()
-    return render(request, 'registration/signup.html', {'form': form})
+    return render(request, 'complaints/signup.html', {'form': form})
 
 def register(request):
     if request.method == 'POST':
@@ -94,4 +94,4 @@ def register(request):
             return redirect('login')  # redirects to login page after successful registration
     else:
         form = UserCreationForm()
-    return render(request, 'registration/register.html', {'form': form})
+    return render(request, 'complaints/register.html', {'form': form})
