@@ -56,7 +56,7 @@ ROOT_URLCONF = 'complaint_system.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'complaint_system' / 'templates'],
+        'DIRS': [BASE_DIR / 'complaints' / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
