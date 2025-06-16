@@ -78,11 +78,11 @@ WSGI_APPLICATION = 'complaint_system.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'complaint_db',
-        'USER': 'root',
-        'PASSWORD': 'Root@1234',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'NAME': os.environ.get('complaint_db'),
+        'USER': os.environ.get('root'),
+        'PASSWORD': os.environ.get('Root@1234'),
+        'HOST': os.environ.get('127.0.0.1.render.com'),  # ✅ Remote host like `mysql-xyz.render.com`
+        'PORT': os.environ.get('3306'),
     }
 }
 
