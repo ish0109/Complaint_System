@@ -9,11 +9,17 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import os
 from pathlib import Path
-import os 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+from dotenv import load_dotenv
+
 BASE_DIR = Path(__file__).resolve().parent.parent
+env_path = BASE_DIR / ".env"
+load_dotenv(dotenv_path=env_path)
+
+print("ENV HOST:", os.getenv("DB_HOST"))  # Just for testing
+
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -78,11 +84,11 @@ WSGI_APPLICATION = 'complaint_system.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('complaint_db'),
-        'USER': os.environ.get('root'),
-        'PASSWORD': os.environ.get('Root@1234'),
-        'HOST': os.environ.get('127.0.0.1.render.com'),  # ✅ Remote host like `mysql-xyz.render.com`
-        'PORT': os.environ.get('3306'),
+        'NAME': os.getenv('DB_NAME', 'complaint_db'),
+        'USER': os.getenv('DB_USER', 'root'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'Root@1234'),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
+        'PORT': os.getenv('DB_PORT', '3306'),
     }
 }
 
